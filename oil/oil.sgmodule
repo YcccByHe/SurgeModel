@@ -4,4 +4,4 @@
 [Panel]
 油价=script-name=油价
 [Script]
-油价=type=generic,https://raw.githubusercontent.com/YcccByHe/SurgeModelPanel/main/oil/oil.js,argument=icon=car&color=#c932a9&provname=
+油价=type=generic,script-path=https://raw.githubusercontent.com/YcccByHe/SurgeModelPanel/main/oil/oil.js,argument=icon=car&color=#c932a9&provname=陕西
