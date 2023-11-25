@@ -2,5 +2,9 @@
 #!desc=和风天气
 [Panel]
 天气=script-name=qweather
+
+[Rule]
+DOMAIN,ip-api.com,DIRECT
+
 [Script]
 qweather=type=generic,script-path=https://raw.githubusercontent.com/YcccByHe/SurgeModelPanel/main/qweather/qweather.js,timeout=60,argument=icon=sunrise.circle.fill&color=#c932a9
