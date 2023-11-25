@@ -1,14 +1,19 @@
 const KEY = '383c082ce1a9438cb5073586ef220512';
 let location = { lon: 34.32, lat: 109.03 };
 
-async function getWeather() {
-  try {
-    const response = await axios.get(`https://devapi.qweather.com/v7/weather/now?location=${location.lon},${location.lat}&key=${KEY}`);
-    const data = response.data;
+function getWeather() {
+  const weatherURL = `https://devapi.qweather.com/v7/weather/now?location=${location.lon},${location.lat}&key=${KEY}`;
 
-    if (data.code === 200) {
-      const now = data.now;
-      const params = getParams($argument);
+  $httpClient.get(weatherURL, (error, response, data) => {
+    if (error) {
+      console.error(error);
+      return;
+    }
+
+    const result = JSON.parse(data);
+    if (result.code === 200) {
+      const now = result.now;
+      const params = getParams($argument); 
       const date = formatDate(new Date(now.obsTime), 'yyyy-MM-dd HH:mm:ss');
       const message = `🌡️: ${now.temp}°C\n☁️: ${now.text}\n🌬️: ${now.windDir}\n⏰: ${date}`;
 
@@ -19,11 +24,9 @@ async function getWeather() {
         "icon-color": params.color
       };
 
-      $done(body);
+      $done(body); 
     }
-  } catch (error) {
-    console.error(error);
-  }
+  });
 }
 
 function formatDate(date, format) {
@@ -40,14 +43,21 @@ function formatDate(date, format) {
   return format.replace(/yyyy|MM|dd|HH|mm|ss/g, match => replacements[match]);
 }
 
-async function getLocation() {
-  try {
-    const response = await axios.get("http://ip-api.com/json/?fields=8450015&lang=zh-CN");
-    const data = response.data;
-    location = { lon: data.lon, lat: data.lat };
-  } catch (error) {
-    console.error(error);
-  }
+function getLocation() {
+  const locationURL = "http://ip-api.com/json/?fields=8450015&lang=zh-CN";
+
+  $httpClient.get(locationURL, (error, response, data) => {
+    if (error) {
+      console.error(error);
+      return;
+    }
+
+    const jsonData = JSON.parse(data);
+    location.lon = jsonData.lon;
+    location.lat = jsonData.lat;
+
+    getWeather(); // Call getWeather after location is updated
+  });
 }
 
 function getParams(paramString) {
@@ -59,4 +69,5 @@ function getParams(paramString) {
   );
 }
 
-getLocation().then(getWeather);
+// Start the process
+getLocation();
