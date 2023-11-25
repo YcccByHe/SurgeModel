@@ -11,7 +11,7 @@ function getWather() {
       if (result.code == 200) {
         const params = getParams($argument);
         const date = formatDateTime(new Date(_now.obsTime), 'yyyy-MM-dd HH:mm:ss');
-        const message = `🌡️：${_now.temp}°c\n☁️：${_now.text}\n🌬️：${_now.windDir}⏰：${date}\n`
+        const message = `🌡️：${_now.temp}°c\n☁️：${_now.text}\n🌬️：${_now.windDir}\n⏰：${date}`
         body = {
           title: "天气",
           content: message,
