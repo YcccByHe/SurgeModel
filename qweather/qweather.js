@@ -11,7 +11,7 @@ function getWeather() {
     }
 
     const result = JSON.parse(data);
-    if (result.code === 200) {
+    if (result.code == 200) {
       const now = result.now;
       const params = getParams($argument); 
       const date = formatDate(new Date(now.obsTime), 'yyyy-MM-dd HH:mm:ss');
@@ -53,8 +53,8 @@ function getLocation() {
     }
 
     const jsonData = JSON.parse(data);
-    location.lon = Number(jsonData.lon).toFixed(2);
-    location.lat = Number(jsonData.lat).toFixed(2);
+        location.lon = Number(jsonData.lon).toFixed(2);
+        location.lat = Number(jsonData.lat).toFixed(2);
 
     getWeather(); // Call getWeather after location is updated
   });
