@@ -8,7 +8,7 @@ async function getWeather() {
 
     if (data.code === 200) {
       const now = data.now;
-      const params = getParams($argument); // Assuming $argument is defined
+      const params = getParams($argument);
       const date = formatDate(new Date(now.obsTime), 'yyyy-MM-dd HH:mm:ss');
       const message = `🌡️: ${now.temp}°C\n☁️: ${now.text}\n🌬️: ${now.windDir}\n⏰: ${date}`;
 
