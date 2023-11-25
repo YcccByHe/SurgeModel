@@ -1,20 +1,29 @@
 const KEY = '383c082ce1a9438cb5073586ef220512'
 const XA = 101110113
 
-$httpClient.get(`https://devapi.qweather.com/v7/weather/now?location=${XA}&key=${KEY}`, (error, response, data) => {
-  if (error) {
-    console.log(error);
-  } else {
-    let result = JSON.parse(data)
-    let _now = result.now
-    if (result.code == 200) {
-      const date = formatDateTime(new Date(_now.obsTime), 'yyyy-MM-dd HH:mm:ss');
-      const message = `🌡️：${_now.temp}°c\n☁️：${_now.text}\n🌬️：${_now.windDir}⏰：${date}\n`
-      console.log(message)
-      $done(message)
+function getWather() {
+  $httpClient.get(`https://devapi.qweather.com/v7/weather/now?location=${XA}&key=${KEY}`, (error, response, data) => {
+    if (error) {
+      console.log(error);
+    } else {
+      let result = JSON.parse(data)
+      let _now = result.now
+      if (result.code == 200) {
+        const params = getParams($argument);
+        const date = formatDateTime(new Date(_now.obsTime), 'yyyy-MM-dd HH:mm:ss');
+        const message = `🌡️：${_now.temp}°c\n☁️：${_now.text}\n🌬️：${_now.windDir}⏰：${date}\n`
+        body = {
+          title: "天气",
+          content: message,
+          icon: params.icon,
+          "icon-color": params.color
+        }
+        $done(body)
+      }
     }
-  }
-});
+  });
+}
+
 
 
 function formatDateTime(date, format) {
@@ -61,3 +70,14 @@ function formatDateTime(date, format) {
 
   return format;
 }
+
+function getParams(param) {
+  return Object.fromEntries(
+    $argument
+      .split("&")
+      .map((item) => item.split("="))
+      .map(([k, v]) => [k, decodeURIComponent(v)])
+  );
+}
+
+getWather()
