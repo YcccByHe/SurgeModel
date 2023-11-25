@@ -53,8 +53,8 @@ function getLocation() {
     }
 
     const jsonData = JSON.parse(data);
-    location.lon = jsonData.lon;
-    location.lat = jsonData.lat;
+    location.lon = Number(jsonData.lon).toFixed(2);
+    location.lat = Number(jsonData.lat).toFixed(2);
 
     getWeather(); // Call getWeather after location is updated
   });
