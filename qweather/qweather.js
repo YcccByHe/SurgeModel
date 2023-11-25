@@ -5,7 +5,7 @@ async function getWeather() {
   try {
     const response = await axios.get(`https://devapi.qweather.com/v7/weather/now?location=${location.lon},${location.lat}&key=${KEY}`);
     const data = response.data;
-    
+
     if (data.code === 200) {
       const now = data.now;
       const params = getParams($argument); // Assuming $argument is defined
@@ -19,7 +19,7 @@ async function getWeather() {
         "icon-color": params.color
       };
 
-      $done(body); // Assuming $done is defined
+      $done(body);
     }
   } catch (error) {
     console.error(error);
