@@ -1,83 +1,62 @@
-const KEY = '383c082ce1a9438cb5073586ef220512'
-const XA = 101110113
+const KEY = '383c082ce1a9438cb5073586ef220512';
+let location = { lon: 34.32, lat: 109.03 };
 
-function getWather() {
-  $httpClient.get(`https://devapi.qweather.com/v7/weather/now?location=${XA}&key=${KEY}`, (error, response, data) => {
-    if (error) {
-      console.log(error);
-    } else {
-      let result = JSON.parse(data)
-      let _now = result.now
-      if (result.code == 200) {
-        const params = getParams($argument);
-        const date = formatDateTime(new Date(_now.obsTime), 'yyyy-MM-dd HH:mm:ss');
-        const message = `🌡️：${_now.temp}°c\n☁️：${_now.text}\n🌬️：${_now.windDir}⏰：${date}\n`
-        body = {
-          title: "天气",
-          content: message,
-          icon: params.icon,
-          "icon-color": params.color
-        }
-        $done(body)
-      }
+async function getWeather() {
+  try {
+    const response = await axios.get(`https://devapi.qweather.com/v7/weather/now?location=${location.lon},${location.lat}&key=${KEY}`);
+    const data = response.data;
+    
+    if (data.code === 200) {
+      const now = data.now;
+      const params = getParams($argument); // Assuming $argument is defined
+      const date = formatDate(new Date(now.obsTime), 'yyyy-MM-dd HH:mm:ss');
+      const message = `🌡️: ${now.temp}°C\n☁️: ${now.text}\n🌬️: ${now.windDir}\n⏰: ${date}`;
+
+      const body = {
+        title: "天气",
+        content: message,
+        icon: params.icon,
+        "icon-color": params.color
+      };
+
+      $done(body); // Assuming $done is defined
     }
-  });
+  } catch (error) {
+    console.error(error);
+  }
 }
 
-
-
-function formatDateTime(date, format) {
-  // Helper function to add leading zeros
+function formatDate(date, format) {
   const zeroPad = (num, places) => String(num).padStart(places, '0');
-
-  // Extracting date components
-  const year = date.getFullYear();
-  const month = date.getMonth() + 1;
-  const day = date.getDate();
-  const hour12 = date.getHours() % 12 === 0 ? 12 : date.getHours() % 12;
-  const hour24 = date.getHours();
-  const minute = date.getMinutes();
-  const second = date.getSeconds();
-  const millisecond = date.getMilliseconds();
-  const quarter = Math.floor((month + 2) / 3);
-  const ampm = hour24 < 12 ? '上午' : '下午';
-  const AM_PM = hour24 < 12 ? 'AM' : 'PM';
-
-  // Replacing year
-  if (/(y+)/.test(format)) {
-    format = format.replace(RegExp.$1, `${year}`.substr(4 - RegExp.$1.length));
-  }
-
-  // Replacing other components
   const replacements = {
-    'M+': month,
-    'd+': day,
-    'h+': hour12,
-    'H+': hour24,
-    'm+': minute,
-    's+': second,
-    'q+': quarter,
-    'S': millisecond,
-    'a': ampm,
-    'A': AM_PM
+    'yyyy': date.getFullYear(),
+    'MM': zeroPad(date.getMonth() + 1, 2),
+    'dd': zeroPad(date.getDate(), 2),
+    'HH': zeroPad(date.getHours(), 2),
+    'mm': zeroPad(date.getMinutes(), 2),
+    'ss': zeroPad(date.getSeconds(), 2),
   };
 
-  for (let k in replacements) {
-    if (new RegExp(`(${k})`).test(format)) {
-      format = format.replace(RegExp.$1, RegExp.$1.length === 1 ? replacements[k] : zeroPad(replacements[k], RegExp.$1.length));
-    }
-  }
-
-  return format;
+  return format.replace(/yyyy|MM|dd|HH|mm|ss/g, match => replacements[match]);
 }
 
-function getParams(param) {
+async function getLocation() {
+  try {
+    const response = await axios.get("http://ip-api.com/json/?fields=8450015&lang=zh-CN");
+    const data = response.data;
+    location = { lon: data.lon, lat: data.lat };
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+function getParams(paramString) {
   return Object.fromEntries(
-    $argument
+    paramString
       .split("&")
-      .map((item) => item.split("="))
-      .map(([k, v]) => [k, decodeURIComponent(v)])
+      .map(item => item.split("="))
+      .map(([key, value]) => [key, decodeURIComponent(value)])
   );
 }
 
-getWather()
+getLocation().then(getWeather);
