@@ -1,6 +1,7 @@
 ﻿#!name=油价查询
 #!desc=provname的值不带"省"字 范例：provname=陕西
 #!arguments=provname:陕西,icon:car,color:#c932a9
+#!category=TEST
 [Panel]
 油价查询=script-name=oilPrice
 [Script]
