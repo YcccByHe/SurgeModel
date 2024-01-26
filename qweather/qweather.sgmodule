@@ -1,5 +1,6 @@
 ﻿#!name=天气
 #!desc=和风天气
+#!category=TEST
 [Panel]
 天气=script-name=qweather
 
