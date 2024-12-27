@@ -22,6 +22,7 @@ const $ = new Env("京东比价");
 var regex = /product\/graphext\/(\d+)\.html/;
 var match = url.match(regex);
 let shareUrl = "https://item.m.jd.com/product/" + match[1] + '.html'
+console.log("-------------------------------")
 console.log(match[1])
 request_history_price(shareUrl).then(data => {
     if (data) {
