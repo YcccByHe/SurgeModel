@@ -1,6 +1,6 @@
 #!name=油价查询
 #!desc=Province 的值不带“省”字，需填写 TianAPI 的 ApiKey
-#!arguments=ApiKey=&Province=陕西&Icon=car&Color=%23c932a9
+#!arguments=Province=%E9%99%95%E8%A5%BF&Icon=car&Color=%23c932a9&ApiKey=
 #!category=TEST
 [Panel]
 油价查询=title="油价查询",content="点击刷新加载油价",style=info,script-name=oilPrice
