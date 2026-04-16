@@ -1,8 +1,8 @@
 #!name=油价查询
-#!desc=Province 的值不带“省”字，需填写 TianAPI 的 ApiKey
-#!arguments=Province=%E9%99%95%E8%A5%BF&Icon=car&Color=%23c932a9&ApiKey=
+#!desc=实时油价查询
+#!arguments=[API]天行Key,[地区]省份:陕西,[图标]名称:car,[颜色]色值:#c932a9
 #!category=TEST
 [Panel]
 油价查询=title="油价查询",content="点击刷新加载油价",style=info,script-name=oilPrice
 [Script]
-oilPrice=type=generic,script-path=https://raw.githubusercontent.com/YcccByHe/SurgeModelPanel/main/oil/oil.js,argument=ApiKey=%ApiKey%&Province=%Province%&Icon=%Icon%&Color=%Color%
+oilPrice=type=generic,script-path=https://raw.githubusercontent.com/YcccByHe/SurgeModelPanel/main/oil/oil.js,argument=ApiKey={{{[API]天行Key}}}&Province={{{[地区]省份}}}&Icon={{{[图标]名称}}}&Color={{{[颜色]色值}}}
