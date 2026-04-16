@@ -1,8 +1,9 @@
 #!name=油价查询
 #!desc=实时油价查询
-#!arguments=[API]天行Key,[地区]省份:陕西,[图标]名称:car,[颜色]色值:#c932a9
-#!category=TEST
+#!arguments=Key,省份:陕西,图标名称:car,颜色:#c932a9
+#!arguments-desc=Key：TianAPI key。\n省份：仅填写省份或直辖市名称，不带“省”或“市”。\n图标名称：SF Symbols 图标名，默认 car。\n颜色：十六进制颜色，默认 #c932a9。
+#!category=You
 [Panel]
 油价查询=title="油价查询",content="点击刷新加载油价",style=info,script-name=oilPrice
 [Script]
-oilPrice=type=generic,script-path=https://raw.githubusercontent.com/YcccByHe/SurgeModelPanel/main/oil/oil.js,argument=ApiKey={{{[API]天行Key}}}&Province={{{[地区]省份}}}&Icon={{{[图标]名称}}}&Color={{{[颜色]色值}}}
+oilPrice=type=generic,script-path=https://raw.githubusercontent.com/YcccByHe/SurgeModelPanel/main/oil/oil.js,argument=ApiKey={{{Key}}}&Province={{{省份}}}&Icon={{{图标名称}}}&Color={{{颜色}}}
